@@ -10,12 +10,14 @@ ENV HELM_VERSION="v2.7.2"
 
 RUN apk add --no-cache bash jq curl
 
+COPY pod_readiness /usr/local/bin/
+
 RUN curl -L https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/kubectl \
   && curl -L https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -o /tmp/helm.tar.gz \
   && tar -zxvf /tmp/helm.tar.gz -C /tmp \
   && mv /tmp/linux-amd64/helm /usr/local/bin/helm \
-  && chmod +x /usr/local/bin/helm \
+  && chmod +x /usr/local/bin/* \
   && rm -rf /tmp/*
 
 CMD ["bash"]
