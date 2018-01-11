@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+usage() {
+  cat <<EOF
+Usage: $0 [OPTIONS]
+
+Options:
+-r   number of attempts
+-i   time between each attempts in second
+-p   pod name
+EOF
+}
+
+
+main() {
+  local interval=2
+  local max_retry=7
+  local retry=0
+
+  while getopts ":hr:i:p:" opt; do
+    case $opt in
+      h)
+        usage
+        exit 0
+        ;;
+      r)
+        max_retry="$OPTARG"
+        ;;
+      i)
+        interval="$OPTARG"
+        ;;
+      p)
+        POD_NAME="$OPTARG"
+        ;;
+    esac
+  done
+  shift "$(($OPTIND -1))"
+
+  if [[ -z "$POD_NAME" ]]; then
+    usage
+    exit 1
+  fi
+
+  while [ $retry -lt $max_retry ]; do
+    local ready=$( kubectl get po "$POD_NAME" -o json | jq ".status.containerStatuses[0].ready" )
+
+    if [ "$ready" = "true" ]; then
+      printf "$POD_NAME is ready !\n"
+      exit 0
+    else
+      printf "$POD_NAME is not ready, retry=$retry, next attempt in $interval seconds\n"
+      sleep $interval
+      retry=$(($retry + 1))
+    fi
+  done
+  printf "failed to check readiness after $max_retry attempts\n"
+  exit 1
+}
+
+main "$@"

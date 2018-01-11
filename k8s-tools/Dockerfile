@@ -10,7 +10,7 @@ ENV HELM_VERSION="v2.7.2"
 
 RUN apk add --no-cache bash jq curl
 
-COPY pod_readiness /usr/local/bin/
+COPY wait_pod_readiness /usr/local/bin/
 
 RUN curl -L https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/kubectl \
