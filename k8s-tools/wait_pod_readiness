@@ -42,7 +42,7 @@ main() {
   fi
 
   while [ $retry -lt $max_retry ]; do
-    local ready=$( kubectl get po "$POD_NAME" -o json | jq ".status.containerStatuses[0].ready" )
+    local ready=$( kubectl get po "$POD_NAME" -o jsonpath="{.status.containerStatuses[0].ready}" )
 
     if [ "$ready" = "true" ]; then
       printf "$POD_NAME is ready !\n"
