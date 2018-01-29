@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
 LABEL vendor="JobTeaser" \
-  com.jobteaser.version="0.2.0" \
+  com.jobteaser.version="0.2.1" \
   com.jobteaser.release-date="2018-01-29" \
   maintainer="dev@jobteaser.com"
 
