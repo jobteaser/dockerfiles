@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
 LABEL vendor="JobTeaser" \
-  com.jobteaser.version="0.2.0" \
+  com.jobteaser.version="0.2.1" \
   com.jobteaser.release-date="2018-01-29" \
   maintainer="dev@jobteaser.com"
 
@@ -34,7 +34,8 @@ RUN git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv \
   && eval "$(rbenv init -)"; rbenv install 2.3.4 \
   && eval "$(rbenv init -)"; rbenv global 2.3.4 \
   && eval "$(rbenv init -)"; gem update --system \
-  && eval "$(rbenv init -)"; gem install bundler --conservative
+  && eval "$(rbenv init -)"; gem install bundler --conservative \
+  && eval "$(rbenv init -)"; rbenv rehash
 
 RUN apt-get purge nodejs npm \
   && curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
