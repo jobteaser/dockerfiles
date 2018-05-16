@@ -1,14 +1,18 @@
 FROM alpine:latest
 
 LABEL vendor="JobTeaser" \
-      com.jobteaser.version="0.2.0" \
-      com.jobteaser.release-data="2018-01-10" \
+      com.jobteaser.version="1.0.0" \
+      com.jobteaser.release-date="2018-05-16" \
       maintainer="dev@jobteaser.com"
 
-ENV KUBECTL_VERSION="v1.9.1"
-ENV HELM_VERSION="v2.7.2"
+ENV KUBECTL_VERSION="v1.10.1"
+ENV HELM_VERSION="v2.9.0"
 
-RUN apk add --no-cache bash jq curl
+RUN apk add --no-cache \
+  bash \
+  jq \
+  curl \
+  make
 
 COPY wait_pod_readiness /usr/local/bin/
 
