@@ -12,6 +12,7 @@ RUN apk add --no-cache \
   bash \
   jq \
   curl \
+  git \
   make
 
 COPY wait_pod_readiness /usr/local/bin/
