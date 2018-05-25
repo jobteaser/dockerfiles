@@ -8,7 +8,7 @@ die() { out "$@"; exit 1; } >&2
 
 usage() {
   cat << EOF
-Synchronize the content of the source directory to the target one.
+Synchronize the content of the local source directory to the local target one.
 
 Usage: ./sync.sh [SOURCE] TARGET
 
@@ -23,7 +23,7 @@ EOF
 }
 
 parse_params() {
-  while getopts ":hs:t:" opt; do
+  while getopts ":h" opt; do
     case $opt in
       h)
         usage
@@ -60,7 +60,7 @@ main() {
   pushd "${SOURCE_DIR}"
   trap 'popd' 0
 
-  rsync --relative --quiet -vrae 'ssh -p 22' "." "${TARGET_DIR}" &
+  rsync --relative --quiet -vra "." "${TARGET_DIR}" &
 
   inotifywait -mr --timefmt '%FT%TZ' --format '%T %w %f %e' \
     -e close_write -e create -e delete "${SOURCE_DIR}" | \
@@ -73,7 +73,7 @@ main() {
     then
         out "I, [${time}] $(echo "${FILE}" | sha256sum) deleted and not synchronized"
     else
-      rsync --progress --relative --quiet -vrae 'ssh -p 22'  "${FILE}" "${TARGET_DIR}" && \
+      rsync --progress --relative --quiet -vra "${FILE}" "${TARGET_DIR}" && \
         out "I, [${time}] $(echo "${FILE}" | sha256sum) synchronized"
     fi
   done
