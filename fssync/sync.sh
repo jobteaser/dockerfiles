@@ -10,11 +10,14 @@ usage() {
   cat << EOF
 Synchronize the content of the local source directory to the local target one.
 
-Usage: ./sync.sh [SOURCE] TARGET
+Usage: ./sync.sh [OPTIONS] [-s SOURCE] -t TARGET
 
 Options:
 
   -h  Help about the command
+  -s  Source directory (current directory if not given)
+  -t  Target directory to sync to
+  -c  Equivalent to --chown option for rsync (unused if empty)
 
 Notes:
   - Without source directory, it synchronizes current directory content.
@@ -23,11 +26,20 @@ EOF
 }
 
 parse_params() {
-  while getopts ":h" opt; do
+  while getopts ":hc:s:t:" opt; do
     case $opt in
       h)
         usage
         exit 0
+        ;;
+      c)
+        RSYNC_CHOWN="${OPTARG}"
+        ;;
+      s)
+        SOURCE_DIR="${OPTARG}"
+        ;;
+      t)
+        TARGET_DIR="${OPTARG}"
         ;;
       \?)
         die "Invalid option: -${OPTARG}"
@@ -44,23 +56,18 @@ parse_params() {
 main() {
   parse_params "$@"
 
-  TARGET_DIR="${2:-}"
-  SOURCE_DIR="$1"
-  if [[ -z "${TARGET_DIR}" ]];
-  then
-    TARGET_DIR="$1"
-    SOURCE_DIR="$(pwd)"
-  fi
+  : "${SOURCE_DIR:=$(pwd)}"
 
   [[ -z "${TARGET_DIR}" ]] && die "$(usage)"
   [[ ! -d "${TARGET_DIR}" ]] && mkdir -p "${TARGET_DIR}"
-
   [[ ! -d "${SOURCE_DIR}" ]] && die "Source directory does not exist"
 
   pushd "${SOURCE_DIR}"
   trap 'popd' 0
 
-  rsync --relative --quiet -vra "." "${TARGET_DIR}" &
+  rsync --relative --quiet \
+    $([[ ! -z "${RSYNC_CHOWN-}" ]] && printf -- "--chown=%s" "${RSYNC_CHOWN}") --fake-super \
+    -vraog "." "${TARGET_DIR}" &
 
   inotifywait -mr --timefmt '%FT%TZ' --format '%T %w %f %e' \
     -e close_write -e create -e delete "${SOURCE_DIR}" | \
@@ -73,7 +80,9 @@ main() {
     then
         out "I, [${time}] $(echo "${FILE}" | sha256sum) deleted and not synchronized"
     else
-      rsync --progress --relative --quiet -vra "${FILE}" "${TARGET_DIR}" && \
+      rsync --relative --quiet \
+        $([[ ! -z "${RSYNC_CHOWN-}" ]] && printf -- "--chown=%s" "${RSYNC_CHOWN}") --fake-super \
+        -vraog "${FILE}" "${TARGET_DIR}" && \
         out "I, [${time}] $(echo "${FILE}" | sha256sum) synchronized"
     fi
   done
