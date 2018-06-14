@@ -1,3 +1,4 @@
+amazon-ecr
 ansicolor
 blueocean
 build-token-root
