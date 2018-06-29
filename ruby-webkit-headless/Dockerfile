@@ -15,11 +15,9 @@ RUN apt-get update -qq && apt-get install -qq -y \
 
 ENV CHROMEDRIVER_VERSION="2.31" \
   CHROMEDRIVER_DIR="/chromedriver" \
-  PATH="$CHROMEDRIVER_DIR:$PATH" \
   CONFIGURE_OPTS="--disable-install-doc" \
-  PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH" \
-  PATH="/usr/local/rbenv/bin:$PATH" \
   RBENV_ROOT="/usr/local/rbenv"
+ENV PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$CHROMEDRIVER_DIR:$PATH"
 
 RUN git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv \
   && git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build \
@@ -41,10 +39,15 @@ RUN apt-get purge nodejs npm \
   && curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
   && apt-get install -y nodejs
 
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" >> /etc/apt/sources.list.d/yarn.list \
+  && wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+  && apt-get update -y \
+  && apt-get install -y yarn
+
 RUN mkdir $CHROMEDRIVER_DIR \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
   && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && apt-get update -y \
   && apt-get install -y google-chrome-stable \
   && wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" \
-  &&  unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR
+  && unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR
