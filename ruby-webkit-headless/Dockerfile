@@ -11,13 +11,15 @@ RUN apt-get update -qq && apt-get install -qq -y \
   software-properties-common python-software-properties \
   libreadline-dev libmysqlclient-dev curl \
   libcurl3 libcurl3-gnutls libcurl4-openssl-dev \
+  libgconf2-4 \
   imagemagick wget unzip
 
-ENV CHROMEDRIVER_VERSION="2.31" \
-  CHROMEDRIVER_DIR="/chromedriver" \
+ENV CHROMEDRIVER_DIR="/usr/local/bin/" \
+  CHROMEDRIVER_VERSION="2.40" \
+  CHROME_VERSION="google-chrome-stable=67.0.3396.99-1" \
   CONFIGURE_OPTS="--disable-install-doc" \
+  PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH" \
   RBENV_ROOT="/usr/local/rbenv"
-ENV PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$CHROMEDRIVER_DIR:$PATH"
 
 RUN git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv \
   && git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build \
@@ -37,17 +39,21 @@ RUN git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv \
 
 RUN apt-get purge nodejs npm \
   && curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
-  && apt-get install -y nodejs
+  && apt-get -qqy install nodejs \
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" >> /etc/apt/sources.list.d/yarn.list \
   && wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && apt-get update -y \
-  && apt-get install -y yarn
+  && apt-get update -qqy \
+  && apt-get -qqy install yarn \
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-RUN mkdir $CHROMEDRIVER_DIR \
-  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+RUN mkdir -p $CHROMEDRIVER_DIR \
+  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-  && apt-get update -y \
-  && apt-get install -y google-chrome-stable \
+  && apt-get update -qqy \
+  && apt-get -qqy install ${CHROME_VERSION:-google-chrome-stable} \
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
   && wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" \
-  && unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR
+  && unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR \
+  && rm $CHROMEDRIVER_DIR/chromedriver*zip
