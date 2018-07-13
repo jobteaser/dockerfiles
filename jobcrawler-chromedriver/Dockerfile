@@ -1,9 +1,8 @@
+# Dockerfile for building the chromedriver image of jobcrawler
 FROM debian:jessie
 
 ENV CHROMEDRIVER_VERSION "2.38"
 ENV GOOGLECHROME_VERSION "67.0.3396.99-1"
-
-ENV CHROMEDRIVER_PORT "9515"
 
 # Download required packages
 RUN apt-get update && apt-get install -yqq \
@@ -24,5 +23,3 @@ RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-ke
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && apt-get -yqq update \
   && apt-get -yqq install google-chrome-stable=$GOOGLECHROME_VERSION
-
-CMD ["chromedriver","--port=$CHROMEDRIVER_PORT"]
