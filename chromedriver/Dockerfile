@@ -7,6 +7,7 @@ LABEL vendor="JobTeaser" \
       maintainer="dev@jobteaser.com"
 
 ENV CHROMEDRIVER_VERSION "2.38"
+ENV GOOGLECHROME_VERSION "68.0.3440.75-1"
 
 # Download required packages
 RUN apt-get update && apt-get install -yqq \
@@ -26,7 +27,7 @@ RUN mkdir -p /opt/chromedriver-$CHROMEDRIVER_VERSION \
 RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && apt-get -yqq update \
-  && apt-get -yqq install google-chrome-stable
+  && apt-get -yqq install google-chrome-stable=$GOOGLECHROME_VERSION
 
 # Chromedriver port
 EXPOSE 9515
