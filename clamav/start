@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
+
+[ -f /var/lib/clamav/main.cvd ] || freshclam
+find "$@" -print0 | xargs -r -0 clamscan --log="${CLAMSCAN_LOGPATH}" $([[ -z "${CLAMSCAN_MOVEPATH-}" ]] || printf -- "--move=%s" "${CLAMSCAN_MOVEPATH-}")
