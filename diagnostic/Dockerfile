@@ -5,6 +5,6 @@ LABEL vendor="Jobteaser" \
       com.jobteaser.release-date="2018-05-04" \
       maintainer="dev@jobteaser.com"
 
-RUN apk add --no-cache curl bash busybox busybox-extras
+RUN apk add --no-cache curl bash busybox busybox-extras socat
 
 CMD ["/bin/bash"]
