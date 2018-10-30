@@ -5,6 +5,7 @@ build-token-root
 credentials-binding
 generic-webhook-trigger
 git
+git-changelog
 github-oauth
 github-pullrequest
 http_request
