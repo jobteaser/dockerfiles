@@ -6,6 +6,8 @@ services behind Keycloak and other OpenID Connect authentication.
 This is Image used Nginx for proxying request and OpenResty with the
 `lua-resty-openidc` library to handle OpenID Connect authentication.
 
+The original project can be found on [GitHub](https://github.com/evry/docker-oidc-proxy) and has been created by [Hans Kristian Flaatten](https://github.com/Starefossen).
+
 !["Docker OIDC Proxy overview"](https://raw.githubusercontent.com/evry/docker-oidc-proxy/master/assets/overview.png "Docker OIDC Proxy overview")
 
 ## Supported tags and respective Dockerfile links

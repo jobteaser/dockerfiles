@@ -1,5 +1,9 @@
 FROM openresty/openresty:1.13.6.2-alpine
-MAINTAINER Hans Kristian Flaatten <hans.flaatten@evry.com>
+
+LABEL vendor="Jobteaser" \
+      com.jobteaser.version="0.1.0" \
+      com.jobteaser.release-date="2018-11-13" \
+      maintainer="dev@jobteaser.com"	
 
 ENV \
  SESSION_VERSION=2.22 \
