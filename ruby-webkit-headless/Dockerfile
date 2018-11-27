@@ -16,7 +16,7 @@ RUN apt-get update -qq && apt-get install -qq -y \
 
 ENV CHROMEDRIVER_DIR="/usr/local/bin/" \
   CHROMEDRIVER_VERSION="2.40" \
-  CHROME_VERSION="google-chrome-stable=67.0.3396.99-1" \
+  CHROME_VERSION="google-chrome-stable=70.0.3538.110-1" \
   CONFIGURE_OPTS="--disable-install-doc" \
   PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH" \
   RBENV_ROOT="/usr/local/rbenv"
@@ -31,8 +31,8 @@ RUN git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv \
   && echo 'export RBENV_ROOT=/usr/local/rbenv' >> /root/.bashrc \
   && echo 'export PATH=/usr/local/rbenv/bin:$PATH' >> /root/.bashrc \
   && echo 'eval "$(rbenv init -)"' >> /root/.bashrc \
-  && eval "$(rbenv init -)"; rbenv install 2.3.4 \
-  && eval "$(rbenv init -)"; rbenv global 2.3.4 \
+  && eval "$(rbenv init -)"; rbenv install 2.5.3 \
+  && eval "$(rbenv init -)"; rbenv global 2.5.3 \
   && eval "$(rbenv init -)"; gem update --system \
   && eval "$(rbenv init -)"; gem install bundler --conservative \
   && eval "$(rbenv init -)"; rbenv rehash
