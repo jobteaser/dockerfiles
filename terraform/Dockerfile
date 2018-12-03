@@ -21,8 +21,7 @@ RUN wget https://github.com/wata727/tflint/releases/download/${TF_LINT_VERSION_T
 	tflint -v
 
 # Install landscape for more readable "terraform plan" outputs (useful when CI will be applied to stacks)
-RUN apk update && apk upgrade &&\
-    apk add ruby ruby-bundler ruby-dev ruby-rdoc alpine-sdk && \
+RUN apk add --update --no-cache ruby ruby-bundler ruby-dev ruby-rdoc alpine-sdk && \
     rm -rf /var/cache/apk/* && \
     gem install terraform_landscape && \
     landscape --version
