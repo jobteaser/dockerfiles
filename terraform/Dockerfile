@@ -5,7 +5,6 @@ LABEL vendor="Jobteaser" \
       com.jobteaser.release-date="2018-12-03" \
       maintainer="dev@jobteaser.com"
 
-
 # Terraform-docs is responsible for creating the README.md files on the project
 ENV TF_DOCS_VERSION_TAG "v0.5.0"
 RUN wget https://github.com/segmentio/terraform-docs/releases/download/${TF_DOCS_VERSION_TAG}/terraform-docs-${TF_DOCS_VERSION_TAG}-linux-amd64 && \
@@ -25,6 +24,8 @@ RUN apk add --update --no-cache ruby ruby-bundler ruby-dev ruby-rdoc alpine-sdk 
     rm -rf /var/cache/apk/* && \
     gem install terraform_landscape && \
     landscape --version
+
+USER nobody:nobody
 
 ENTRYPOINT ["terraform"]
 
