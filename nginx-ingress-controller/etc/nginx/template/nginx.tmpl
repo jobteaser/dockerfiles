@@ -251,16 +251,14 @@ http {
     {{ else }}
     {{ if $cfg.EnableSyslog }}
     access_log syslog:server={{ $cfg.SyslogHost }}:{{ $cfg.SyslogPort }} upstreaminfo if=$loggable;
-    {{ else }}
-    access_log {{ $cfg.AccessLogPath }} upstreaminfo if=$loggable;
     {{ end }}
+    access_log {{ $cfg.AccessLogPath }} upstreaminfo if=$loggable;
     {{ end }}
 
     {{ if $cfg.EnableSyslog }}
     error_log syslog:server={{ $cfg.SyslogHost }}:{{ $cfg.SyslogPort }} {{ $cfg.ErrorLogLevel }};
-    {{ else }}
-    error_log  {{ $cfg.ErrorLogPath }} {{ $cfg.ErrorLogLevel }};
     {{ end }}
+    error_log  {{ $cfg.ErrorLogPath }} {{ $cfg.ErrorLogLevel }};
 
     {{ buildResolvers $cfg.Resolver $cfg.DisableIpv6DNS }}
 
