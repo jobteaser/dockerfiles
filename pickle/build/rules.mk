@@ -6,16 +6,15 @@ GIT_STATE := $(shell \
 	&& echo "clean"  || echo "dirty")
 BUILD_DATE := $(shell date -u +%FT%TZ)
 
+# services builds every services
 services: $(SERVICES)
 
 # Manually trigger the proto based go generated sourcces
 proto-go-generate: ; $(MAKE) $(GENERATED_GO_FROM_PROTO)
 
+# Each service foo of SERVICES can be build by calling `make foo`
 $(SERVICES): $(GENERATED_GO_FROM_PROTO)
 	@docker-compose build $(OPTS) $@
-
-# Those targets are using a builder container to call the go mod commands
-go-mod-vendor go-mod-tidy: ; @cd src && go mod $(@:go-mod-%=%)
 
 # Rule for building go sources from a proto file
 %.pb.go: %.proto
@@ -24,9 +23,9 @@ go-mod-vendor go-mod-tidy: ; @cd src && go mod $(@:go-mod-%=%)
 
 # Triggers the unit tests (go test)
 unit-tests: $(GENERATED_GO_FROM_PROTO)
-	@cd src && go test -mod vendor ./...
+	@go test -mod vendor ./...
 
-# Each 'service' of SERVICES have a 'service'-tests target that run the integration tests (Gherkin cucumber)
+# Each service foo of SERVICES have a foo-tests target that run the integration tests (Gherkin cucumber)
 $(SERVICES:%=%-tests): $(GENERATED_GO_FROM_PROTO)
 	@docker-compose up            \
 	    --abort-on-container-exit \
@@ -40,22 +39,25 @@ $(SERVICES:%=%-tests): $(GENERATED_GO_FROM_PROTO)
 	    exit $$exit_code ;                        \
 	fi
 
-# Each 'service' of SERVICES have a 'service'-sh target that provide a shell inside the service
-# but without the service started. Once you are inside you can eventually run it manually
+# Each service foo of SERVICES have a foo-sh target that provide a shell inside the service.
+# but without the service started. Once you are inside you can eventually run it manually.
+# We are making use of aliases (which is not the case by default with 'run') to be abble
+# to reach the test's dummy servers with their service name (service name from the docker-compose file)
 $(SERVICES:%=%-sh) $(SERVICES:%=%-tests-sh): $(GENERATED_GO_FROM_PROTO)
 	@docker-compose run --rm --use-aliases $(@:%-sh=%) sh
 
-# Each 'service' of SERVICES have a 'service'-force-build target that trigger a no-cache docker build
+# Each service foo of SERVICES have a foo-force-build target that trigger a no-cache docker build
 # for this service
 $(SERVICES:%=%-force-build): ; @OPTS=--no-cache $(MAKE) $(@:%-force-build=%)
 
-# Each 'service' of SERVICES have a 'service'-force-build target that trigger a no-cache docker build
+# Each service foo of SERVICES can be up with target foo-up
 $(SERVICES:%=%-up): ; @docker-compose up $(@:%-up=%)
 
-# Each 'service' of SERVICES have a 'service'-down target that down this service
+# Each service foo of SERVICES can be down with target foo-down
 $(SERVICES:%=%-down): ; @docker-compose down $(@:%-down=%)
 
-# Each 'service' of SERVICES have a 'service'-up target that up this service
+# Each service foo of SERVICES have a foo-push-container to send the service
+# image to its dedicated registry
 $(SERVICES:%=%-push-container): ; @docker-compose push $(@:%-push-container=%)
 
 # up is used to up all the services
@@ -64,10 +66,15 @@ up: services ; docker-compose $@ $(SERVICES)
 # down is used to down all
 down: ; docker-compose down
 
-# Helpful: targets 'service'-exec-sh and 'service'-tests-exec-sh for each 'service' of SERVICES
+# Helpful: targets foo-exec-sh and foo-tests-exec-sh for each service foo of SERVICES
+# Calling those targets provides a shell inside an already running container.
 $(SERVICES:%=%-exec-sh) $(SERVICES:%=%-tests-exec-sh): ; @docker-compose exec $(@:%-exec-sh=%) sh
 
-# Run this target to remove the containers that can be instanciated by this makefile
+# Remove every containers
 clean-containers: ; @docker-compose rm -sf
+
+# Remove every untracked file
 clean-workspace: ; @git clean -fdx
+
+# Clean everything cleanable
 clean-all: clean-containers clean-workspace
