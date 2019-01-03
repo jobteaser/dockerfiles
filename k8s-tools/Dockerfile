@@ -1,12 +1,12 @@
 FROM alpine:latest
 
 LABEL vendor="JobTeaser" \
-      com.jobteaser.version="1.0.0" \
-      com.jobteaser.release-date="2018-05-16" \
+      com.jobteaser.version="1.1.0" \
+      com.jobteaser.release-date="2019-01-02" \
       maintainer="dev@jobteaser.com"
 
-ENV KUBECTL_VERSION="v1.10.1"
-ENV HELM_VERSION="v2.9.0"
+ENV KUBECTL_VERSION="v1.10.11"
+ENV HELM_VERSION="v2.12.1"
 
 RUN apk add --no-cache \
   bash \
