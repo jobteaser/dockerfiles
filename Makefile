@@ -1,11 +1,8 @@
-ifndef REGISTRY
-REGISTRY := jobteaser
-endif
-
 ifndef VERSION
 VERSION := alpha
 endif
 
+# Use this target to build the builder (default image version: alpha)
 builder:
 	@docker build                                          \
 	    -t $(REGISTRY)/coretech/pickle/builder:$(VERSION)  \
