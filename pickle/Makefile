@@ -13,5 +13,6 @@ builder:
 	    --build-arg git_commit=$(shell git rev-parse HEAD) \
 	    --build-arg build_date=$(shell date -u +%FT%TZ)    \
 	  .
+.PHONY: builder
 
 include build/rules.mk
