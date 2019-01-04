@@ -1,6 +1,6 @@
-ARG REGISTRY=jobteaser
-ARG USE_BUILDER=alpha
-FROM ${REGISTRY}/coretech/pickle/builder:${USE_BUILDER} AS builder
+ARG DOCKER_REGISTRY=jobteaser
+ARG BUILDER_VERSION=alpha
+FROM ${DOCKER_REGISTRY}/coretech/pickle/builder:${BUILDER_VERSION} AS builder
 
 WORKDIR /src
 COPY src .
