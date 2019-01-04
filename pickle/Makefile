@@ -1,5 +1,5 @@
-ifndef REGISTRY
-REGISTRY := jobteaser
+ifndef DOCKER_REGISTRY
+DOCKER_REGISTRY := jobteaser
 endif
 
 ifndef VERSION
@@ -9,7 +9,7 @@ endif
 # Use this target to build the builder (default image version: alpha)
 builder:
 	@docker build                                          \
-	    -t $(REGISTRY)/coretech/pickle/builder:$(VERSION)  \
+	    -t $(DOCKER_REGISTRY)/coretech/pickle/builder:$(VERSION)  \
 	    --build-arg git_commit=$(shell git rev-parse HEAD) \
 	    --build-arg build_date=$(shell date -u +%FT%TZ)    \
 	  .
