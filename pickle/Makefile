@@ -1,3 +1,7 @@
+ifndef REGISTRY
+REGISTRY := jobteaser
+endif
+
 ifndef VERSION
 VERSION := alpha
 endif
