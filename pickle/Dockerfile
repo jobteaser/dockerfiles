@@ -1,18 +1,22 @@
 FROM docker:18.09.0-dind
-RUN apk --update-cache add  \
-    ca-certificates           \
-    docker                    \
-    gcc                       \
-    git                       \
-    libc-dev                  \
-    librdkafka-dev            \
-    make                      \
-    openssl-dev               \
-    pkgconf                   \
-    protobuf                  \
-    py-pip
-ENV GOLANG_VERSION 1.11.4
-RUN set -eux; \
+
+RUN apk --update-cache add \
+  ca-certificates \
+  docker \
+  gcc \
+  git \
+  libc-dev \
+  librdkafka-dev \
+  make \
+  openssl-dev \
+  openssh \
+  pkgconf \
+  protobuf \
+  py-pip
+
+  # from: https://github.com/docker-library/golang/blob/304174c7c604cbb7dd445ab58f479efe98f3bbf4/1.11/alpine3.8/Dockerfile
+  ENV GOLANG_VERSION 1.11.4
+  RUN set -eux; \
     apk add --no-cache --virtual .build-deps \
     bash \
     musl-dev \
@@ -55,21 +59,28 @@ RUN set -eux; \
     \
     export PATH="/usr/local/go/bin:$PATH"; \
     go version
-ENV GOPATH  /go
-ENV PATH    /go/bin:/usr/local/go/bin:${PATH}
-RUN go get -u                               \
-    github.com/golang/protobuf/protoc-gen-go  \
-    github.com/DATA-DOG/godog/cmd/godog
+  ENV GOPATH  /go
+  ENV PATH    /go/bin:/usr/local/go/bin:${PATH}
+  RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
+  WORKDIR ${GOPATH}
+
+RUN go get -u \
+  github.com/golang/protobuf/protoc-gen-go \
+  github.com/DATA-DOG/godog/cmd/godog
+
+ENV DOCKER_COMPOSE_VERSION 1.23.1
+
 RUN pip install \
-    docker-compose==1.23.1
-ENV GO111MODULE=on
+  docker-compose==${DOCKER_COMPOSE_VERSION}
+
 RUN echo "go test -tags godogs -mod vendor -v --godog.format=pretty --godog.random" >> ~/.ash_history
+
 WORKDIR /builder
+
 ADD build/rules.mk .
 ADD build/Dockerfile .
-ARG build_date
-ARG git_commit
-LABEL vendor="Jobteaser" \
-    com.jobteaser.git-commit="${git_commit}" \
-    com.jobteaser.build-date="${build_date}" \
-    maintainer="dev@jobteaser.com"
+ADD build/README.md .
+
+ENV GO111MODULE on
+
+WORKDIR ${GOPATH}
