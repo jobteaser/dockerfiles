@@ -1,4 +1,4 @@
-ARG builder_image=jobteaser/coretech/pickle/builder:alpha
+ARG builder_image=jobteaser/pickle/builder:alpha
 FROM ${builder_image} AS builder
 
 WORKDIR /pickle
