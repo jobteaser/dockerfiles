@@ -2,7 +2,7 @@ SERVICES := greeter
 
 export BUILDER_VERSION := alpha
 export BUILDER_CONTEXT := $(CURDIR)/.builder
-export BUILDER_IMAGE := jobteaser/coretech/pickle/builder:$(BUILDER_VERSION)
+export BUILDER_IMAGE := jobteaser/pickle:$(BUILDER_VERSION)
 
 # Make a local copy of the builder image assets.
 local:
