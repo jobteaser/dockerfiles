@@ -1,5 +1,13 @@
 export
 
+ifndef DOCKER_REGISTRY
+DOCKER_REGISTRY := jobteaser
+endif
+
+ifndef VERSION
+VERSION := $(shell [ -f VERSION ] && cat VERSION || echo alpha)
+endif
+
 GIT_COMMIT := $(shell git rev-parse HEAD)
 GIT_STATE := $(shell \
 	[ `git status --porcelain 2>/dev/null | wc -l` -eq 0 ] \
@@ -10,37 +18,42 @@ BUILD_DATE := $(shell date -u +%FT%TZ)
 services: $(SERVICES)
 .PHONY: services
 
-# Manually trigger the proto based go generated sourcces
-proto-go-generate: ; $(MAKE) $(GENERATED_GO_FROM_PROTO)
-.PHONY: proto-go-generate
-
 # Each service foo of SERVICES can be build by calling `make foo`
-$(SERVICES): $(GENERATED_GO_FROM_PROTO)
+$(SERVICES):
 	@docker-compose build $(OPTS) $@
 .PHONY: $(SERVICES)
 
-# Rule for building go sources from a proto file
+# generate everything
+generate: go-generate
+.PHONY: generate
+
+# call go generate over all go sources
+go-generate:
+	@go generate -mod vendor ./...
+.PHONY: go-generate
+
+# generate a go files from a proto files
 %.pb.go: %.proto
 	@echo "Generating $@ from $<"
 	@protoc --go_out=plugins=grpc:. $<
 
 # Triggers the unit tests (go test)
-unit-tests: $(GENERATED_GO_FROM_PROTO)
+unit-tests:
 	@go test -mod vendor ./...
 .PHONY: unit-tests
 
 # Each service foo of SERVICES have a foo-tests target that run the integration tests (Gherkin cucumber)
-$(SERVICES:%=%-tests): $(GENERATED_GO_FROM_PROTO)
-	@docker-compose up            \
+$(SERVICES:%=%-tests):
+	@docker-compose up \
 	    --abort-on-container-exit \
-	    --always-recreate-deps    \
-	    --exit-code-from $@       \
-	$@ ; exit_code=$$? ;          \
-	if [ ! $$exit_code -eq 0 ] ; then             \
-	    docker-compose logs ;                     \
-	    docker-compose logs $@ ;                  \
+	    --always-recreate-deps \
+	    --exit-code-from $@ \
+	$@ ; exit_code=$$? ; \
+	if [ ! $$exit_code -eq 0 ] ; then \
+	    docker-compose logs ; \
+	    docker-compose logs $@ ; \
 	    echo "FAILURE: $@ returned $$exit_code" ; \
-	    exit $$exit_code ;                        \
+	    exit $$exit_code ; \
 	fi
 .PHONY: $(SERVICES:%=%-tests)
 
@@ -48,7 +61,7 @@ $(SERVICES:%=%-tests): $(GENERATED_GO_FROM_PROTO)
 # but without the service started. Once you are inside you can eventually run it manually.
 # We are making use of aliases (which is not the case by default with 'run') to be abble
 # to reach the test's dummy servers with their service name (service name from the docker-compose file)
-$(SERVICES:%=%-sh) $(SERVICES:%=%-tests-sh): $(GENERATED_GO_FROM_PROTO)
+$(SERVICES:%=%-sh) $(SERVICES:%=%-tests-sh):
 	@docker-compose run --rm --use-aliases $(@:%-sh=%) sh
 .PHONY: $(SERVICES:%=%-sh) $(SERVICES:%=%-tests-sh)
 
@@ -94,3 +107,18 @@ clean-workspace: ; @git clean -fdx
 # Clean everything cleanable
 clean-all: clean-containers clean-workspace
 .PHONY: clean-all
+
+.DEFAULT_GOAL := sh
+
+sh:
+	@docker run \
+	  -it \
+	  --rm \
+	  -e BUILDER_VERSION=$(BUILDER_VERSION) \
+	  -v $(BUILDER_CONTEXT)/cache:/.cache \
+	  -v $(CURDIR):$(CURDIR) \
+	  -v /var/run/docker.sock:/var/run/docker.sock \
+	  -v $$HOME/.gitconfig:/root/.gitconfig \
+	  -v $$HOME/.ssh:/root/.ssh \
+	  -w $(CURDIR) \
+	  $(BUILDER_IMAGE) sh
