@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  greeter:
+    build:
+      args:
+        app_name: greeter
+        build_date: ${BUILD_DATE}
+        builder_image: ${DOCKER_REGISTRY:-jobteaser}/coretech/pickle/builder:${BUILDER_VERSION:-alpha}
+        git_commit: ${GIT_COMMIT}
+        git_state: ${GIT_STATE}
+        main_folder: greeter
+        version: ${VERSION:-alpha}
+      context: .
+      dockerfile: ${BUILDER_CONTEXT:-.builder}/Dockerfile
+    command: greeter
+    container_name: greeter
+    image: ${DOCKER_REGISTRY:-jobteaser}/coretech/credits/accounter:${VERSION:-alpha}
+
