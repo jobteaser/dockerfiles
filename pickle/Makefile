@@ -8,5 +8,5 @@ endif
 
 # Use this target to build the builder (default image version: alpha)
 builder:
-	@docker build -t $(DOCKER_REGISTRY)/coretech/pickle/builder:$(VERSION) .
+	@docker build -t $(DOCKER_REGISTRY)/pickle/builder:$(VERSION) .
 .PHONY: builder

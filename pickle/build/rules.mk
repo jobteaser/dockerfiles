@@ -1,9 +1,5 @@
 export
 
-ifndef DOCKER_REGISTRY
-DOCKER_REGISTRY := jobteaser
-endif
-
 ifndef VERSION
 VERSION := $(shell [ -f VERSION ] && cat VERSION || echo alpha)
 endif
