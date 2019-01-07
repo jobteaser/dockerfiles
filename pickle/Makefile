@@ -6,7 +6,11 @@ ifndef VERSION
 VERSION := $(shell [ -f VERSION ] && cat VERSION || echo alpha)
 endif
 
+ifndef BUILDER_IMAGE
+IMAGE_NAME := my/awsome/image
+endif
+
 # Use this target to build the builder (default image version: alpha)
 builder:
-	@docker build -t $(DOCKER_REGISTRY)/coretech/pickle/builder:$(VERSION) .
+	@docker build -t $(DOCKER_REGISTRY)/$(IMAGE_NAME):$(VERSION) .
 .PHONY: builder
