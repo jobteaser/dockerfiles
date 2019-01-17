@@ -23,23 +23,20 @@ RUN go get github.com/golang/protobuf/... && \
 FROM alpine:3.8
 
 LABEL vendor="Jobteaser" \
-      com.jobteaser.version="0.1.0" \
-      com.jobteaser.release-date="2018-12-19" \
-      com.jobteaser.origin="github.com/dockerfiles/prototool" \
-      maintainer="dev@jobteaser.com"
+  com.jobteaser.version="0.1.0" \
+  com.jobteaser.release-date="2018-12-19" \
+  com.jobteaser.origin="github.com/dockerfiles/prototool" \
+  maintainer="dev@jobteaser.com"
 
 RUN apk add --no-cache libc6-compat make ruby && \
   gem install grpc-tools -v '1.17' --no-ri --no-rdoc
 
 COPY --from=build /usr/local/bin/prototool /usr/local/bin/prototool
 COPY --from=build /go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go
-COPY --from=build /usr/local/go /usr/local/go
 
 ENV PATH /usr/local/go/bin:$PATH
 
 RUN chmod +x /usr/local/bin/prototool && \
   chmod +x /usr/local/bin/protoc-gen-go
-
-# USER nobody:nobody
 
 ENTRYPOINT ["prototool"]
