@@ -104,9 +104,9 @@ clean-workspace: ; @git clean -fdx
 clean-all: clean-containers clean-workspace
 .PHONY: clean-all
 
-.DEFAULT_GOAL := sh
+.DEFAULT_GOAL := pickle-shell
 
-sh:
+pickle-shell:
 	@docker run \
 	  -it \
 	  --rm \
@@ -117,4 +117,4 @@ sh:
 	  -v $$HOME/.gitconfig:/root/.gitconfig \
 	  -v $$HOME/.ssh:/root/.ssh \
 	  -w $(CURDIR) \
-	  $(BUILDER_IMAGE) sh
+	  $(PICKLE_IMAGE) sh

@@ -12,7 +12,6 @@ services:
         version: ${VERSION:-alpha}
       context: .
       dockerfile: ${BUILDER_CONTEXT:-.builder}/Dockerfile
-    command: greeter
     container_name: greeter
     image: ${DOCKER_REGISTRY:-jobteaser}/greeter:${VERSION:-alpha}
 
