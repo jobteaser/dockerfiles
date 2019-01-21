@@ -23,4 +23,5 @@ $(CONTEXTS:%=%-push):
 .PHONY: build-all
 build-all: $(CONTEXTS:%=%-build)
 
-DEFAULT_GOAL := build-all
+
+.DEFAULT_GOAL := build-all
