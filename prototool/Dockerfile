@@ -28,7 +28,7 @@ LABEL vendor="Jobteaser" \
   com.jobteaser.origin="github.com/dockerfiles/prototool" \
   maintainer="dev@jobteaser.com"
 
-RUN apk add --no-cache libc6-compat make ruby && \
+RUN apk add --no-cache libc6-compat git make ruby && \
   gem install grpc-tools -v '1.17' --no-ri --no-rdoc
 
 COPY --from=build /usr/local/bin/prototool /usr/local/bin/prototool
