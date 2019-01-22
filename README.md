@@ -23,11 +23,3 @@ DOCKER_REGISTRY=custom VERSION=dev make foo
 ```
 
 Builds the image `custom/foo:dev` based on the file that must exist `foo/Dockerfiles`.
-
-### All
-
-```sh
-make build-all
-```
-
-Coffee time run...
