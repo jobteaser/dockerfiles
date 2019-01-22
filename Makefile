@@ -19,9 +19,3 @@ $(CONTEXTS:%=%-build):
 .PHONY: $(CONTEXTS:%=%-push)
 $(CONTEXTS:%=%-push):
 	@docker push $(call IMAGE,push)
-
-.PHONY: build-all
-build-all: $(CONTEXTS:%=%-build)
-
-
-.DEFAULT_GOAL := build-all
