@@ -39,4 +39,9 @@ ENV PATH /usr/local/go/bin:$PATH
 RUN chmod +x /usr/local/bin/prototool && \
   chmod +x /usr/local/bin/protoc-gen-go
 
+WORKDIR /builder
+
+ADD build/rules.mk .
+ADD build/README.md .
+
 ENTRYPOINT ["prototool"]
