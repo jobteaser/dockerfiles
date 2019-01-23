@@ -22,15 +22,21 @@ produces a `build` folder that contains the generated files for:
 
 * go
 
-    build/go/my/v1beta1/first_module.pb.go
-    build/go/my/v2beta3/second_module.pb.go
+```
+build/go/my/v1beta1/first_module.pb.go
+build/go/my/v2beta3/second_module.pb.go
+```
 
 * ruby
 
-    build/ruby/lib/my/v1beta1/first_module_pb.rb
-    build/ruby/lib/my/v1beta1/first_module_services_pb.rb
-    build/ruby/proto.gemspec
+```
+build/ruby/lib/my/v1beta1/first_module_pb.rb
+build/ruby/lib/my/v1beta1/first_module_services_pb.rb
 
-    build/ruby/lib/my/v1beta1/first_module_pb.rb
-    build/ruby/lib/my/v2beta3/second_module_services_pb.rb
-    build/ruby/proto.gemspec
+build/ruby/lib/my/v1beta1/first_module_pb.rb
+build/ruby/lib/my/v2beta3/second_module_services_pb.rb
+
+build/ruby/proto.gemspec
+```
+
+A minimalist example that may inspire you is provided in the folder [example](example).
