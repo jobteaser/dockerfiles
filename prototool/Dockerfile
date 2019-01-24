@@ -39,4 +39,9 @@ ENV PATH /usr/local/go/bin:$PATH
 RUN chmod +x /usr/local/bin/prototool && \
   chmod +x /usr/local/bin/protoc-gen-go
 
+RUN addgroup -S prototool && \
+  adduser -D -u 1000 -S prototool -G prototool
+
+USER prototool:prototool
+
 ENTRYPOINT ["prototool"]
