@@ -23,8 +23,8 @@ RUN go get github.com/golang/protobuf/... && \
 FROM alpine:3.8
 
 LABEL vendor="Jobteaser" \
-  com.jobteaser.version="0.1.0" \
-  com.jobteaser.release-date="2018-12-19" \
+  com.jobteaser.version="1.0.0" \
+  com.jobteaser.release-date="2019-01-24" \
   com.jobteaser.origin="github.com/dockerfiles/prototool" \
   maintainer="dev@jobteaser.com"
 
