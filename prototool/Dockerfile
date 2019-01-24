@@ -28,8 +28,10 @@ LABEL vendor="Jobteaser" \
   com.jobteaser.origin="github.com/dockerfiles/prototool" \
   maintainer="dev@jobteaser.com"
 
-RUN apk add --no-cache libc6-compat git make ruby && \
-  gem install grpc-tools -v '1.17' --no-ri --no-rdoc
+ENV GRPC_TOOLS_GEM_VERSION=1.17
+
+RUN apk add --no-cache libc6-compat git make ruby su-exec && \
+  gem install grpc-tools -v $GRPC_TOOLS_GEM_VERSION --no-ri --no-rdoc
 
 COPY --from=build /usr/local/bin/prototool /usr/local/bin/prototool
 COPY --from=build /go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go
@@ -39,9 +41,7 @@ ENV PATH /usr/local/go/bin:$PATH
 RUN chmod +x /usr/local/bin/prototool && \
   chmod +x /usr/local/bin/protoc-gen-go
 
-RUN addgroup -S prototool && \
-  adduser -D -u 1000 -S prototool -G prototool
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-USER prototool:prototool
-
-ENTRYPOINT ["prototool"]
+ENTRYPOINT ["entrypoint.sh"]
