@@ -7,7 +7,7 @@ Build the files generated from protocol buffer modules.
 According to your Makefile, if there is two modules:
 
 ```Makefile
-MODULES := \
+API := \
     my/v1beta1/first_module \
     my/v2beta3/second_module \
 ````

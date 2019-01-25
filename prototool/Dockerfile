@@ -45,8 +45,6 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /builder
-
-ADD build/rules.mk .
-ADD build/README.md .
+COPY build/ .
 
 ENTRYPOINT ["entrypoint.sh"]
