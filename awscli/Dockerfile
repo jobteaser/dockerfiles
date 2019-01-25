@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:latest
 
 LABEL vendor="JobTeaser" \
       com.jobteaser.version="1.0.0" \
