@@ -1,40 +1,21 @@
-MODULES := hello/v1beta1/example
+ifndef LOCAL_USER_ID
+LOCAL_USER_ID := $(shell id -u)
+endif
 
-define RB_GEMSPEC
-lib = File.expand_path('../lib', __FILE__)
-$$LOAD_PATH.unshift(lib) unless $$LOAD_PATH.include?(lib)
+SHELL := docker run \
+	--rm \
+	-e RB_GEMSPEC \
+	-v $(CURDIR):$(CURDIR) \
+	-v $(CURDIR)/.builder:/host \
+	-w $(CURDIR) \
+	-e LOCAL_USER_ID=$(LOCAL_USER_ID) \
+	jobteaser/prototool:alpha
 
-Gem::Specification.new do |spec|
-	spec.name = 'foo-example'
-	spec.version = '$(VERSION)'
-	spec.authors = ['foo']
-	spec.email = ['foo@bar.com']
 
-	spec.summary = 'foo files for ruby'
-	spec.description = 'This gem contains generated protocol buffer files for ruby module foo'
+API := hello/v1beta1/example
 
-	spec.require_paths = ['lib']
-end
-endef
-
-export
-
-BUILDER_IMAGE := jobteaser/prototool:alpha
 BUILDER_CONTEXT := $(CURDIR)/.builder
 
-define SHELL
-	docker run
-	--rm
-	-v $(CURDIR)/.builder:/host
-	-v $$PWD:$$PWD
-	-w $$PWD
-	-e RB_GEMSPEC
-	--entrypoint=sh
-	$(DOCKER_REGISTRY)/$(BUILDER_IMAGE)
-endef
-BUILDER_CONTEXT := $(CURDIR)/.builder
-
-# Make a local copy of the builder image assets.
 local:
 	@cp -f /builder/README.md /builder/rules.mk /host
 

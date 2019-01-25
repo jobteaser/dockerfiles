@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package prototool.hello.v1beta1;
+
+message AcceptTalentRequest {
+      string talent_id = 1;
+}
+
+message AcceptTalentResponse {
+    Talent talent = 1;
+}
+
+service TalentBankService {
+    rpc AcceptTalent(AcceptTalentRequest) returns (AcceptTalentResponse) {}
+}
+
+message Talent {
+    string id = 1;
+}
