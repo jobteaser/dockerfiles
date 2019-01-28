@@ -17,7 +17,7 @@ RUN apt-get update -qq && apt-get install -qq -y \
 
 ENV CHROMEDRIVER_DIR="/usr/local/bin/" \
   CHROMEDRIVER_VERSION="2.40" \
-  CHROME_VERSION="google-chrome-stable=71.0.3578.80-1" \
+  CHROME_VERSION="google-chrome-stable=71.0.3578.98-1" \
   CONFIGURE_OPTS="--disable-install-doc" \
   PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH" \
   RBENV_ROOT="/usr/local/rbenv"
