@@ -39,7 +39,7 @@ RUN git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv \
   && eval "$(rbenv init -)"; rbenv rehash
 
 RUN apt-get purge nodejs npm \
-  && curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
+  && curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - \
   && apt-get -qqy install nodejs \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
