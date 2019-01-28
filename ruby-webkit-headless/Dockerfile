@@ -43,12 +43,6 @@ RUN apt-get purge nodejs npm \
   && apt-get -qqy install nodejs \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" >> /etc/apt/sources.list.d/yarn.list \
-  && wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && apt-get update -qqy \
-  && apt-get -qqy install yarn \
-  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-
 RUN mkdir -p $CHROMEDRIVER_DIR \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
