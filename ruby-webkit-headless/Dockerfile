@@ -1,8 +1,8 @@
 FROM ubuntu:14.04
 
 LABEL vendor="JobTeaser" \
-  com.jobteaser.version="0.2.1" \
-  com.jobteaser.release-date="2018-01-29" \
+  com.jobteaser.version="1.0.0" \
+  com.jobteaser.release-date="2019-01-28" \
   maintainer="dev@jobteaser.com"
 
 RUN apt-get update -qq && apt-get install -qq -y \
@@ -17,7 +17,7 @@ RUN apt-get update -qq && apt-get install -qq -y \
 
 ENV CHROMEDRIVER_DIR="/usr/local/bin/" \
   CHROMEDRIVER_VERSION="2.40" \
-  CHROME_VERSION="google-chrome-stable=71.0.3578.80-1" \
+  CHROME_VERSION="google-chrome-stable=71.0.3578.98-1" \
   CONFIGURE_OPTS="--disable-install-doc" \
   PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH" \
   RBENV_ROOT="/usr/local/rbenv"
@@ -39,14 +39,8 @@ RUN git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv \
   && eval "$(rbenv init -)"; rbenv rehash
 
 RUN apt-get purge nodejs npm \
-  && curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
+  && curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - \
   && apt-get -qqy install nodejs \
-  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" >> /etc/apt/sources.list.d/yarn.list \
-  && wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && apt-get update -qqy \
-  && apt-get -qqy install yarn \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 RUN mkdir -p $CHROMEDRIVER_DIR \
