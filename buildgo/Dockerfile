@@ -1,8 +1,13 @@
-FROM golang:1.12.0-alpine
+FROM golang:1.12.0-stretch
 
 LABEL vendor="JobTeaser" \
       com.jobteaser.version="1.12.0" \
       com.jobteaser.release-date="2019-03-08" \
       maintainer="dev@jobteaser.com"
 
-RUN apk add --no-cache git make gcc libc-dev pkgconfig librdkafka-dev
+ENV LIBRDKAFKA_VERSION=0.11.5
+
+RUN curl -Lk -o /root/librdkafka-${LIBRDKAFKA_VERSION}.tar.gz https://github.com/edenhill/librdkafka/archive/v${LIBRDKAFKA_VERSION}.tar.gz && \
+      tar -xzf /root/librdkafka-${LIBRDKAFKA_VERSION}.tar.gz -C /root && \
+      cd /root/librdkafka-${LIBRDKAFKA_VERSION} && \
+      ./configure --prefix /usr && make && make install && make clean && ./configure --clean
