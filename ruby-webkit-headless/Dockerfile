@@ -13,7 +13,8 @@ RUN apt-get update -qq && apt-get install -qq -y \
   libcurl3 libcurl3-gnutls libcurl4-openssl-dev \
   libgconf2-4 \
   imagemagick wget unzip \
-  libtool automake autoconf
+  libtool automake autoconf \
+  cmake
 
 ENV CHROMEDRIVER_DIR="/usr/local/bin/" \
   CHROMEDRIVER_VERSION="2.40" \
