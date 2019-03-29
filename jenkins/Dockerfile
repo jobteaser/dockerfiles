@@ -6,10 +6,7 @@ RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 USER root
 RUN export DEBIAN_FRONTEND=noninteractive; \
     export DEBCONF_NONINTERACTIVE_SEEN=true; \
-    echo 'tzdata tzdata/Areas select Etc' | debconf-set-selections; \
-    echo 'tzdata tzdata/Zones/Etc select UTC' | debconf-set-selections; \
-    apt-get update -qqy && apt-get install -qqy --no-install-recommends \
-        tzdata \
+    apt-get update -qqy && apt-get install -qqy --no-install-recommends tzdata \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
