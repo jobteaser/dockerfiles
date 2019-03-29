@@ -18,7 +18,6 @@ RUN apt-get update -qq && apt-get install -qq -y \
 
 ENV CHROMEDRIVER_DIR="/usr/local/bin/" \
   CHROMEDRIVER_VERSION="2.40" \
-  CHROME_VERSION="google-chrome-stable=71.0.3578.98-1" \
   CONFIGURE_OPTS="--disable-install-doc" \
   PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH" \
   RBENV_ROOT="/usr/local/rbenv"
@@ -48,7 +47,7 @@ RUN mkdir -p $CHROMEDRIVER_DIR \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && apt-get update -qqy \
-  && apt-get -qqy install ${CHROME_VERSION:-google-chrome-stable} \
+  && apt-get -qqy install google-chrome-stable \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
   && wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" \
   && unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR \
