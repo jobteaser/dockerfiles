@@ -12,4 +12,4 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 
 ENV TZ Europe/Paris
 
-USER jenkins
+USER jenkins:jenkins
