@@ -1,8 +1,8 @@
 FROM ubuntu:14.04
 
 LABEL vendor="JobTeaser" \
-  com.jobteaser.version="1.0.0" \
-  com.jobteaser.release-date="2019-01-28" \
+  com.jobteaser.version="1.1.0" \
+  com.jobteaser.release-date="2019-04-08" \
   maintainer="dev@jobteaser.com"
 
 RUN apt-get update -qq && apt-get install -qq -y \
