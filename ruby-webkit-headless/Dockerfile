@@ -1,8 +1,8 @@
 FROM ubuntu:14.04
 
 LABEL vendor="JobTeaser" \
-  com.jobteaser.version="1.0.0" \
-  com.jobteaser.release-date="2019-01-28" \
+  com.jobteaser.version="1.1.0" \
+  com.jobteaser.release-date="2019-04-08" \
   maintainer="dev@jobteaser.com"
 
 RUN apt-get update -qq && apt-get install -qq -y \
@@ -13,11 +13,11 @@ RUN apt-get update -qq && apt-get install -qq -y \
   libcurl3 libcurl3-gnutls libcurl4-openssl-dev \
   libgconf2-4 \
   imagemagick wget unzip \
-  libtool automake autoconf
+  libtool automake autoconf \
+  cmake
 
 ENV CHROMEDRIVER_DIR="/usr/local/bin/" \
   CHROMEDRIVER_VERSION="2.40" \
-  CHROME_VERSION="google-chrome-stable=71.0.3578.98-1" \
   CONFIGURE_OPTS="--disable-install-doc" \
   PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH" \
   RBENV_ROOT="/usr/local/rbenv"
@@ -47,7 +47,7 @@ RUN mkdir -p $CHROMEDRIVER_DIR \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && apt-get update -qqy \
-  && apt-get -qqy install ${CHROME_VERSION:-google-chrome-stable} \
+  && apt-get -qqy install google-chrome-stable \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
   && wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" \
   && unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR \
