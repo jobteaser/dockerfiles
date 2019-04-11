@@ -5,10 +5,12 @@ LABEL vendor="JobTeaser" \
       com.jobteaser.release-date="2018-09-17" \
       maintainer="dev@jobteaser.com"
 
-ENV CURATOR_VERSION 5.5.4
+ENV CURATOR_VERSION 5.6.0
+ENV PYYAML_VERSION 3.12
 
 RUN apk --no-cache add python3 py3-pip && \
     pip3 install --upgrade pip && \
+    pip3 install -U pyyaml==${PYYAML_VERSION} && \
     pip3 install elasticsearch-curator==${CURATOR_VERSION}
 
 WORKDIR /usr/src/app
