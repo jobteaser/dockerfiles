@@ -5,6 +5,10 @@ LABEL vendor="JobTeaser" \
       com.jobteaser.release-date="2019-03-08" \
       maintainer="dev@jobteaser.com"
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    postgresql-client \
+  && rm -rf /var/lib/apt/lists/*
+
 ENV LIBRDKAFKA_VERSION=0.11.5
 
 RUN curl -Lk -o /root/librdkafka-${LIBRDKAFKA_VERSION}.tar.gz https://github.com/edenhill/librdkafka/archive/v${LIBRDKAFKA_VERSION}.tar.gz && \
