@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM jobteaser/circleci-docker-build:latest
 
 LABEL vendor="JobTeaser"
 LABEL maintainer="opensource@jobteaser.com"
