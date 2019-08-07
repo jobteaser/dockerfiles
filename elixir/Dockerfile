@@ -11,6 +11,8 @@ ENV NODE_VERSION 9.7.0
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV LANG C.UTF-8
+
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
@@ -35,9 +37,13 @@ RUN apt-get update -y && \
     ) && \
     ( \
       cd /tmp && \
-      wget -q https://github.com/elixir-lang/elixir/releases/download/v$ELIXIR_VERSION/Precompiled.zip && \
-      unzip -d /usr/local Precompiled.zip && \
-      rm Precompiled.zip \
+      wget -q https://github.com/elixir-lang/elixir/archive/v$ELIXIR_VERSION.zip && \
+      mkdir -p /usr/local/src && \
+      unzip v$ELIXIR_VERSION.zip && \
+      mv elixir-$ELIXIR_VERSION /usr/local/src/elixir && \
+      rm -f v$ELIXIR_VERSION.zip && \
+      cd /usr/local/src/elixir && \
+      make install clean \
     ) && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get remove --purge -y \
