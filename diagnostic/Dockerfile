@@ -1,10 +1,18 @@
-FROM alpine:3.7
+FROM ubuntu:18.04
 
-LABEL vendor="Jobteaser" \
-      com.jobteaser.version="0.1.0" \
-      com.jobteaser.release-date="2018-05-04" \
-      maintainer="dev@jobteaser.com"
+LABEL vendor="Jobteaser"
+LABEL maintainer="foundation@jobteaser.com"
 
-RUN apk add --no-cache curl bash busybox busybox-extras socat
+RUN apt-get upgrade -y && \
+    apt-get update -y && \
+    apt-get install -y \
+	            --no-install-recommends \
+	            curl \
+	            bash \
+	            dnsutils \
+	            traceroute \
+	            inetutils-ping \
+	            vim \
+	            socat
 
-CMD ["/bin/bash"]
+ENTRYPOINT ["/bin/bash"]
