@@ -1,12 +1,12 @@
 FROM alpine
 
-ARG CURATOR_VERSION=5.6.0
-ARG PYYAML_VERSION=3.12
-
 LABEL vendor="JobTeaser" \
       com.jobteaser.version="1.0.1" \
-      com.jobteaser.release-date="2018-09-17" \
+      com.jobteaser.release-date="2019-10-10" \
       maintainer="dev@jobteaser.com"
+
+ARG CURATOR_VERSION=5.6.0
+ARG PYYAML_VERSION=3.12
 
 RUN apk --no-cache add python3 py3-pip && \
     pip3 install --upgrade pip && \
