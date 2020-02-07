@@ -16,6 +16,7 @@ RUN apt-get update -y && \
       inetutils-ping \
       mtr-tiny \
       netcat-openbsd \
+      openjdk-11-jdk \
       postgresql-client \
       socat \
       traceroute \
