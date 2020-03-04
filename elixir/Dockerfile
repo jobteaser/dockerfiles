@@ -6,7 +6,7 @@ LABEL maintainer="opensource@jobteaser.com"
 # Erlang Solutions build
 ENV ERLANG_VERSION 21.3.8.6
 
-ENV ELIXIR_VERSION 1.7.3
+ENV ELIXIR_VERSION 1.8.2
 ENV NODE_VERSION 9.7.0
 
 ENV DEBIAN_FRONTEND noninteractive
