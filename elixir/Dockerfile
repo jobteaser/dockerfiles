@@ -4,9 +4,9 @@ LABEL vendor="JobTeaser"
 LABEL maintainer="opensource@jobteaser.com"
 
 # Erlang Solutions build
-ENV ERLANG_VERSION 21.3.8.6
+ENV ERLANG_VERSION 22.3.4.2
 
-ENV ELIXIR_VERSION 1.8.2
+ENV ELIXIR_VERSION 1.10.3
 ENV NODE_VERSION 9.7.0
 
 ENV DEBIAN_FRONTEND noninteractive
