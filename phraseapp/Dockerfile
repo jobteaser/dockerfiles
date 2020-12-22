@@ -15,6 +15,7 @@ RUN apt-get update -y && \
         ca-certificates \
         wget \
         git \
+        openssh-client \
     && \
     mkdir -p /usr/local/etc && \
     ( \
