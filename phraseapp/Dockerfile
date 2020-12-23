@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 LABEL vendor="JobTeaser"
-LABEL maintainer="devex@jobteaser.com"
+LABEL maintainer="squad-devex@jobteaser.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
