@@ -7,7 +7,7 @@ LABEL maintainer="opensource@jobteaser.com"
 ENV ERLANG_VERSION 23.1
 
 ENV ELIXIR_VERSION 1.10.4
-ENV NODE_VERSION 9.7.0
+ENV NODE_VERSION 14.15.4
 
 ENV DEBIAN_FRONTEND noninteractive
 
