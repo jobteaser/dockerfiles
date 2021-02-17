@@ -21,6 +21,7 @@ RUN apt-get update -y && \
       socat \
       traceroute \
       wget \
+      redis-server \
     && \
     ( \
       cd /tmp && \
