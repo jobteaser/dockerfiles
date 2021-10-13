@@ -5,9 +5,9 @@ LABEL maintainer="squad-devex@jobteaser.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV PHRASECLI_VERSION=2.0.25
+ENV PHRASECLI_VERSION=2.3.0
 ENV BINARY_LOCATION=https://github.com/phrase/phrase-cli/releases/download/$PHRASECLI_VERSION/phrase_linux_amd64.tar.gz
-ENV NODE_VERSION 10.16.3
+ENV NODE_VERSION 16.10.0
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
