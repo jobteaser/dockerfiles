@@ -12,6 +12,7 @@ ENV NODE_VERSION 16.10.0
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
+        curl \
         ca-certificates \
         wget \
         git \
