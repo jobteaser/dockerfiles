@@ -5,8 +5,8 @@ LABEL maintainer="chapter-frontend@jobteaser.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV NODE_VERSION 10.16.3
-ENV NPM_VERSION 6.10.3
+ENV NODE_VERSION 18.15.0
+ENV NPM_VERSION 9.5.0
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
