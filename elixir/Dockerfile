@@ -9,6 +9,8 @@ ENV ERLANG_VERSION 25.3
 ENV ELIXIR_VERSION 1.14.3
 ENV NODE_VERSION 14.15.4
 
+ENV UBUNTU_VERSION focal
+
 ENV DEBIAN_FRONTEND noninteractive
 
 ENV LANG C.UTF-8
@@ -31,9 +33,9 @@ RUN apt-get update -y && \
     ) && \
     ( \
       cd /tmp && \
-      wget -q https://packages.erlang-solutions.com/erlang/debian/pool/esl-erlang_$ERLANG_VERSION-1~ubuntu~bionic_amd64.deb && \
-      apt install -y ./esl-erlang_$ERLANG_VERSION-1~ubuntu~bionic_amd64.deb && \
-      rm esl-erlang_$ERLANG_VERSION-1~ubuntu~bionic_amd64.deb \
+      wget -q https://packages.erlang-solutions.com/erlang/debian/pool/esl-erlang_$ERLANG_VERSION-1~ubuntu~${UBUNTU_VERSION}_amd64.deb && \
+      apt install -y ./esl-erlang_$ERLANG_VERSION-1~ubuntu~${UBUNTU_VERSION}_amd64.deb && \
+      rm esl-erlang_$ERLANG_VERSION-1~ubuntu~${UBUNTU_VERSION}_amd64.deb \
     ) && \
     ( \
       cd /tmp && \
