@@ -19,6 +19,7 @@ RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
       bash wget ca-certificates unzip git openssh-client docker.io make clang libicu-dev && \
+    update-ca-certificates && \
     ( \
       cd /tmp && \
       wget -q https://nodejs.org/download/release/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz && \
