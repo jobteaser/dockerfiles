@@ -4,10 +4,10 @@ LABEL vendor="JobTeaser"
 LABEL maintainer="opensource@jobteaser.com"
 
 # Erlang Solutions build
-ENV ERLANG_VERSION 25.3
+ENV ERLANG_VERSION 26.1.2
 
-ENV ELIXIR_VERSION 1.14.3
-ENV NODE_VERSION 14.15.4
+ENV ELIXIR_VERSION 1.16.0
+ENV NODE_VERSION 18.12.0
 
 ENV UBUNTU_VERSION focal
 
@@ -21,29 +21,29 @@ RUN apt-get update -y && \
       bash wget ca-certificates unzip git openssh-client docker.io make clang libicu-dev && \
     ( \
       cd /tmp && \
-      wget -q https://nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz && \
-      tar -xzf node-v$NODE_VERSION-linux-x64.tar.gz && \
-      rm node-v$NODE_VERSION-linux-x64.tar.gz && \
-      cd node-v$NODE_VERSION-linux-x64 && \
+      wget -q https://nodejs.org/download/release/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz && \
+      tar -xzf node-v${NODE_VERSION}-linux-x64.tar.gz && \
+      rm node-v${NODE_VERSION}-linux-x64.tar.gz && \
+      cd node-v${NODE_VERSION}-linux-x64 && \
       cp -r bin /usr/local/ && \
       cp -r include /usr/local/ && \
       cp -r lib /usr/local/ && \
       cp -r share /usr/local/ && \
-      rm -rf node-v$NODE_VERSION-linux-x64 \
+      rm -rf node-v${NODE_VERSION}-linux-x64 \
     ) && \
     ( \
       cd /tmp && \
-      wget -q https://packages.erlang-solutions.com/erlang/debian/pool/esl-erlang_$ERLANG_VERSION-1~ubuntu~${UBUNTU_VERSION}_amd64.deb && \
-      apt install -y ./esl-erlang_$ERLANG_VERSION-1~ubuntu~${UBUNTU_VERSION}_amd64.deb && \
-      rm esl-erlang_$ERLANG_VERSION-1~ubuntu~${UBUNTU_VERSION}_amd64.deb \
+      wget -q https://binaries2.erlang-solutions.com/ubuntu/pool/contrib/e/esl-erlang/esl-erlang_${ERLANG_VERSION}-1~ubuntu~${UBUNTU_VERSION}_amd64.deb && \
+      apt install -y ./esl-erlang_${ERLANG_VERSION}-1~ubuntu~${UBUNTU_VERSION}_amd64.deb && \
+      rm esl-erlang_${ERLANG_VERSION}-1~ubuntu~${UBUNTU_VERSION}_amd64.deb \
     ) && \
     ( \
       cd /tmp && \
-      wget -q https://github.com/elixir-lang/elixir/archive/v$ELIXIR_VERSION.zip && \
+      wget -q https://github.com/elixir-lang/elixir/archive/v${ELIXIR_VERSION}.zip && \
       mkdir -p /usr/local/src && \
-      unzip v$ELIXIR_VERSION.zip && \
-      mv elixir-$ELIXIR_VERSION /usr/local/src/elixir && \
-      rm -f v$ELIXIR_VERSION.zip && \
+      unzip v${ELIXIR_VERSION}.zip && \
+      mv elixir-${ELIXIR_VERSION} /usr/local/src/elixir && \
+      rm -f v${ELIXIR_VERSION}.zip && \
       cd /usr/local/src/elixir && \
       make install clean \
     ) && \
