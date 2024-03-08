@@ -4,9 +4,9 @@ LABEL vendor="JobTeaser"
 LABEL maintainer="opensource@jobteaser.com"
 
 # Erlang Solutions build
-ENV ERLANG_VERSION 26.1.2
+ENV ERLANG_VERSION 26.2.1
 
-ENV ELIXIR_VERSION 1.16.0
+ENV ELIXIR_VERSION 1.16.1
 ENV NODE_VERSION 18.12.0
 
 ENV UBUNTU_VERSION focal
